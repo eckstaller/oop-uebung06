@@ -7,6 +7,48 @@ class Baum<T extends Comparable<T>> {
 		T value;
 		Element left, right;
 		Element(T value) { this.value = value; }
+		void addRekElem(T v){
+			if(v.equals(value))return;
+			else if (this.value.compareTo(v) > 0) {
+				if (left == null) {
+					left = new Element(v);
+					return;
+				} else {
+					left.addRekElem(v);
+					return;
+				}
+			} else {
+					if (right == null) {
+						right = new Element(v);
+						return;
+					} else {
+						right.addRekElem(v);
+						return;
+					}
+				}
+		}
+		boolean containsRek(T value){
+				int c = this.value.compareTo(value);
+				if (c == 0)
+					return true;
+				else if (c > 0)
+					if(left!=null)
+						return left.containsRek(value);
+					else return false;
+				else
+					if(right!=null)
+						return right.containsRek(value);
+					else return false;
+		}
+		@Override
+		public String toString(){
+			if(left==null)
+				if(right!=null) return value + ", " + right;
+				else return value.toString();
+			else
+				if(right!=null) return left + ", " + value + ", "+ right;
+				else return left + ", " + value;
+		}
 	}
 
 	private Element root;
@@ -48,7 +90,11 @@ class Baum<T extends Comparable<T>> {
 	 *  Wie `add`, aber rekursiv zu implementieren.
 	 */
 	void addRek(T value) {
-		throw new UnsupportedOperationException();
+		if (root == null) {
+			root = new Element(value);
+			return;
+		}
+		else root.addRekElem(value);
 	}
 
 	/**
@@ -75,8 +121,10 @@ class Baum<T extends Comparable<T>> {
 	/**
 	 * Wie `contains`, aber rekursiv zu implementieren.
 	 */
-	boolean containsRek(T value) {
-		throw new UnsupportedOperationException();
+	boolean containsRek(T value){
+		if(root==null)
+			return false;
+		else return root.containsRek(value);
 	}
 
 	/**
@@ -120,6 +168,7 @@ class Baum<T extends Comparable<T>> {
 	 * Zusatzaufgabe: Wie `toString`, nur rekursiv zu implementieren.
 	 */
 	String toStringRek() {
-		throw new UnsupportedOperationException();
+		if(root==null) return "[]";
+		else return "[" + root.toString() + "]";
 	}
 }
